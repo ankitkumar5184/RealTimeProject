@@ -22,14 +22,14 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     mergeTestResults: true
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    searchFolder: './target/Extent-Reports/'
-    testResultsFiles: '**/TEST-*.xml'
-    failTaskOnFailedTests: true
-    publishRunAttachments: true
-    testRunTitle: 'QA - API Tests'
+# - task: PublishTestResults@2
+#   inputs:
+#     testResultsFormat: 'JUnit'
+#     searchFolder: './target/Extent-Reports/'
+#     testResultsFiles: '**/TEST-*.xml'
+#     failTaskOnFailedTests: true
+#     publishRunAttachments: true
+#     testRunTitle: 'QA - API Tests'
 
 - task: CopyFiles@2
   inputs:
@@ -39,7 +39,7 @@ steps:
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-
+    
 - task: SendEmail@1
   inputs:
     To: 'ankit.kumar@infostride.com'
