@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 pool:
-  Agent.Name: windows-latest
+  Agent.Name: 'AWSVSQAA701'
 
 steps: 
 - task: Gradle@2
