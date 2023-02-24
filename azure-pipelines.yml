@@ -4,12 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 pool:
-  name: Build
-  demands:
-  - Agent.Name -equals AWSVSQAA701
+  Agent.Name: 'AWSVSQAA701'
 
-steps:
-# clean up daemons
+steps: 
 - task: Gradle@2
   inputs:
     gradleWrapperFile: 'gradlew'
@@ -17,28 +14,28 @@ steps:
     gradleOptions: '-Xmx12288m'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
-    tasks: "--stop"
-
-- task: Gradle@2
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    javaHomeOption: 'JDKVersion'
-    gradleOptions: '-Xmx12288m'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: "clean debugDeployTest -DdebugSingle=Consumer_ConfirmationSpec --rerun-tasks --stacktrace"
+    tasks: 'clean toolsApiTests --rerun-tasks --stacktrace --continue --info --debug'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
-    searchFolder: './build/reports/'
+    testResultsFiles: '**/TEST-*.xml'
+    mergeTestResults: true
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    searchFolder: './target/Extent-Reports/'
     testResultsFiles: '**/TEST-*.xml'
     failTaskOnFailedTests: true
     publishRunAttachments: true
-    testRunTitle: 'QA - UI Regression Tests'
-    
-- task: PublishBuildArtifacts@1
+    testRunTitle: 'QA - API Tests'
+
+- task: CopyFiles@2
   inputs:
-    PathtoPublish: './test-output/junitreports/'  # for images
-    ArtifactName: 'TestScreenshots'
-    publishLocation: 'Container'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
