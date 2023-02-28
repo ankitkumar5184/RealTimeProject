@@ -22,15 +22,6 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     mergeTestResults: true
 
-# - task: PublishTestResults@2
-#   inputs:
-#     testResultsFormat: 'JUnit'
-#     searchFolder: './target/Extent-Reports/'
-#     testResultsFiles: '**/TEST-*.xml'
-#     failTaskOnFailedTests: true
-#     publishRunAttachments: true
-#     testRunTitle: 'QA - API Tests'
-
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
@@ -40,17 +31,3 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     
-- task: SendEmail@1
-  inputs:
-    To: 'ankit.kumar@infostride.com'
-    CC: 'saurav.sharma@infostride.com'
-    BCC: 'aayush.khandelwal@infostride.com'
-    From: 'ankit.kumar@infostride.com'
-    Subject: 'pipleine'
-    Body: 'Hi, Your Build is successful.'
-    BodyAsHtml: false
-    AddAttachment: true
-    Attachment: '$(System.DefaultWorkingDirectory)/target/Extent-Reports/index.html'
-    SmtpServer: 'smtp.office365.com'
-    SmtpUsername: 'ankit.kumar@infostride.com'
-    SmtpPassword: 'INFO7184@Ak'
